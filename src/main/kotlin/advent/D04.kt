@@ -7,13 +7,16 @@ class D04 {
         return number.sorted().joinToString("") == num
     }
 
+    fun Int.frequency(): Collection<Int> {
+        return toString().groupingBy { it }.eachCount().values
+    }
+
     fun Int.hasADouble(): Boolean {
-        return Regex("(.)\\1+").containsMatchIn(toString())
+        return (frequency().max() ?: 0) >= 2
     }
 
     fun Int.hasADoubleOnly(): Boolean {
-        val num = toString()
-        return num.groupingBy { it }.eachCount().values.contains(2)
+        return frequency().contains(2)
     }
 
     fun part1(start: Int, end: Int): Int {
