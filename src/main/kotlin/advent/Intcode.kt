@@ -3,6 +3,7 @@ package advent
 class Intcode(private val initialMemory: List<Int>, val input: MutableList<Int> = mutableListOf()) {
     private var instructionPointer = 0
     private val memory = initialMemory.toMutableList()
+    fun dumpMemory() = memory.toList()
     val output = mutableListOf<Int>()
     var computerState = ComputerState.NotStarted
         private set
@@ -61,7 +62,6 @@ class Intcode(private val initialMemory: List<Int>, val input: MutableList<Int> 
         }
     }
 
-    // overload get to be able to read data using a Parameter as array index. Example: val x = memory[parameter]
     private operator fun MutableList<Int>.get(parameter: Parameter): Int {
         return when (parameter.mode) {
             Parameter.Mode.Position -> this[parameter.value]
@@ -69,7 +69,6 @@ class Intcode(private val initialMemory: List<Int>, val input: MutableList<Int> 
         }
     }
 
-    // overload set to be able to write data using a Parameter as array index. Example: memory[parameter] = 1
     private operator fun MutableList<Int>.set(parameter: Parameter, value: Int) {
         when (parameter.mode) {
             Parameter.Mode.Position -> this[parameter.value] = value
@@ -125,8 +124,6 @@ class Intcode(private val initialMemory: List<Int>, val input: MutableList<Int> 
         }
     }
 
-    // Reinitialize the computer and optionally override parts of the memory with the given values
-    // memoryOverride is a list of <address, value> pairs.
     fun reinitialize(memoryOverride: List<Pair<Int, Int>> = listOf()) {
         memory.clear()
         memory.addAll(initialMemory)
